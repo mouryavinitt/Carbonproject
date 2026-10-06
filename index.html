@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarbonTrack - Daily Carbon Calculator</title>
+    <!-- Google Fonts for Clean Modern Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f7f8f6;
+            --card-bg: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --border-color: #f3f4f6;
+            --input-bg: #f9fafb;
+            --accent-green: #22c55e;
+            --button-bg: #18181b;
+            --button-hover: #27272a;
+            --results-bg: #f2f5f1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            padding-bottom: 80px;
+        }
+
+        /* Top Navigation Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 80px;
+            background-color: transparent;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            font-size: 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin: 40px auto 50px auto;
+            max-width: 650px;
+            padding: 0 20px;
+        }
+
+        .hero-tag {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* Main Form Container */
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        }
+
+        .user-field-card {
+            background-color: var(--input-bg);
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .user-field-card label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .user-field-card input {
+            border: 1px solid #d1d5db;
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 14px;
+            outline: none;
+            width: 220px;
+        }
+
+        .section-tag {
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .section-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        /* Input Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .input-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid var(--border-color);
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 16px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .input-card-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .mode-icon {
+            font-size: 22px;
+        }
+
+        .mode-info h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .mode-info p {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 6px 12px;
+            width: 100px;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            text-align: right;
+            font-weight: 600;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-wrapper span {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-left: 6px;
+        }
+
+        /* Combined Summary Box */
+        .summary-box {
+            background-color: var(--input-bg);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .summary-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .summary-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .summary-val {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .calculate-btn {
+            width: 100%;
+            background: var(--button-bg);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            padding: 18px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .calculate-btn:hover {
+            background: var(--button-hover);
+        }
+
+        /* Results Display Section */
+        .results-container {
+            max-width: 820px;
+            margin: 40px auto 0 auto;
+            background: var(--results-bg);
+            border-radius: 24px;
+            padding: 40px;
+            display: none; /* Revealed after clicking calculate */
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .result-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .result-card h5 {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .result-card .value {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .result-card .unit {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .breakdown-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .breakdown-card h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .breakdown-list {
+            list-style: none;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .breakdown-item-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .breakdown-item-val {
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="logo">
+            <span class="logo-icon">🌱</span> CarbonTrack
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-tag">DAILY CARBON CALCULATOR</div>
+        <h1>How much carbon did you create today?</h1>
+        <p>Tell us everything you travelled and consumed today. We'll combine your daily footprint and calculate your total carbon emissions.</p>
+    </section>
+
+    <!-- Interactive Form -->
+    <main class="container">
+        
+        <!-- User Profile Field -->
+        <div class="user-field-card">
+            <label for="userName">Enter Your Name:</label>
+            <input type="text" id="userName" placeholder="Guest User">
+        </div>
+
+        <div class="section-tag">01 — YOUR FULL DAY</div>
+        <h2 class="section-title">How did you travel & use energy today?</h2>
+        <p class="section-desc">Enter the total units/distance consumed for each activity.</p>
+
+        <div class="grid">
+            <!-- Services / Utilities -->
+            <div class="input-card">
+                <div class="input-card-left">
+                    <span class="mode-icon">⚡</span>
+                    <div class="mode-info">
+                        <h3>Electricity</h3>
+                        <p>Total units today</p>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="electricity" value="0" min="0" step="0.1">
+                    <span>kWh</span>
+                </div>
+            </div>
+
+            <div class="input-card">
+                <div class="input-card-left">
+                    <span class="mode-icon">🔥</span>
+                    <div class="mode-info">
+                        <h3>Cooking Gas</h3>
+                        <p>Total LPG used today</p>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="gas" value="0" min="0" step="0.1">
+                    <span>kg</span>
+                </div>
+            </div>
+
+            <!-- Travel Modes -->
+            <div class="input-card">
+                <div class="input-card-left">
+                    <span class="mode-icon">🚗</span>
+                    <div class="mode-info">
+                        <h3>Car</h3>
+                        <p>Total distance today</p>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="car" value="0" min="0" step="0.1">
+                    <span>km</span>
+                </div>
+            </div>
+
+            <div class="input-card">
+                <div class="input-card-left">
+                    <span class="mode-icon">🏍️</span>
+                    <div class="mode-info">
+                        <h3>Motorbike / Bike</h3>
+                        <p>Total distance today</p>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="bike" value="0" min="0" step="0.1">
+                    <span>km</span>
+                </div>
+            </div>
+
+            <div class="input-card">
+                <div class="input-card-left">
+                    <span class="mode-icon">🚌</span>
+                    <div class="mode-info">
+                        <h3>Bus</h3>
+                        <p>Total distance today</p>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="bus" value="0" min="0" step="0.1">
+                    <span>km</span>
+                </div>
+            </div>
+
+            <div class="input-card">
+                <div class="input-card-left">
+                    <span class="mode-icon">🚆</span>
+                    <div class="mode-info">
+                        <h3>Train</h3>
+                        <p>Total distance today</p>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="train" value="0" min="0" step="0.1">
+                    <span>km</span>
+                </div>
+            </div>
+
+            <div class="input-card">
+                <div class="input-card-left">
+                    <span class="mode-icon">⚡🚗</span>
+                    <div class="mode-info">
+                        <h3>EV</h3>
+                        <p>Total distance today</p>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="ev" value="0" min="0" step="0.1">
+                    <span>km</span>
+                </div>
+            </div>
+
+            <div class="input-card">
+                <div class="input-card-left">
+                    <span class="mode-icon">🚶</span>
+                    <div class="mode-info">
+                        <h3>Walking / Cycle</h3>
+                        <p>Total distance today</p>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <input type="number" id="walk" value="0" min="0" step="0.1">
+                    <span>km</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-box">
+            <div class="summary-info">
+                <h4>Your complete day</h4>
+                <p>All transport and service types will be combined into one calculation.</p>
+            </div>
+            <div class="summary-val" id="summaryStatus">Total CO₂ will appear here</div>
+        </div>
+
+        <button class="calculate-btn" onclick="calculateFootprint()">Calculate my total footprint →</button>
+    </main>
+
+    <!-- Calculation Output Section -->
+    <div class="results-container" id="resultsSection">
+        <div class="section-tag">YOUR DAILY RESULT</div>
+        <h2 class="section-title" id="reportUserHeader" style="margin-bottom: 24px;">Your complete carbon footprint</h2>
+
+        <div class="results-grid">
+            <div class="result-card">
+                <h5>Total CO₂ generated</h5>
+                <div class="value" id="totalCo2">0.00 <span class="unit">kg CO₂</span></div>
+            </div>
+            <div class="result-card">
+                <h5>Emission Rating</h5>
+                <div class="value" id="ratingScore" style="color: var(--accent-green);">Low</div>
+            </div>
+        </div>
+
+        <div class="breakdown-card">
+            <h4>Your complete journey breakdown</h4>
+            <ul class="breakdown-list">
+                <li class="breakdown-item">
+                    <div class="breakdown-item-left"><span>⚡</span> Electricity</div>
+                    <div class="breakdown-item-val" id="resElectricity">0.00 kg CO₂</div>
+                </li>
+                <li class="breakdown-item">
+                    <div class="breakdown-item-left"><span>🔥</span> Cooking Gas</div>
+                    <div class="breakdown-item-val" id="resGas">0.00 kg CO₂</div>
+                </li>
+                <li class="breakdown-item">
+                    <div class="breakdown-item-left"><span>🚗</span> Car</div>
+                    <div class="breakdown-item-val" id="resCar">0.00 kg CO₂</div>
+                </li>
+                <li class="breakdown-item">
+                    <div class="breakdown-item-left"><span>🏍️</span> Motorbike</div>
+                    <div class="breakdown-item-val" id="resBike">0.00 kg CO₂</div>
+                </li>
+                <li class="breakdown-item">
+                    <div class="breakdown-item-left"><span>🚌</span> Bus</div>
+                    <div class="breakdown-item-val" id="resBus">0.00 kg CO₂</div>
+                </li>
+                <li class="breakdown-item">
+                    <div class="breakdown-item-left"><span>🚆</span> Train</div>
+                    <div class="breakdown-item-val" id="resTrain">0.00 kg CO₂</div>
+                </li>
+                <li class="breakdown-item">
+                    <div class="breakdown-item-left"><span>⚡🚗</span> Electric Vehicle</div>
+                    <div class="breakdown-item-val" id="resEv">0.00 kg CO₂</div>
+                </li>
+                <li class="breakdown-item">
+                    <div class="breakdown-item-left"><span>🚶</span> Walking / Cycle</div>
+                    <div class="breakdown-item-val" id="resWalk">0.00 kg CO₂</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <span>🌱</span> CarbonTrack — Small journeys, smaller footprints.
+    </footer>
+
+    <!-- JavaScript Mirroring Java Logic -->
+    <script>
+        // Scientific factors matching CarbonEmissionCalculator.java
+        const ELECTRICITY_FACTOR = 0.82;
+        const GAS_FACTOR          = 2.98;
+        const CAR_FACTOR         = 0.21;
+        const BUS_FACTOR         = 0.10;
+        const TRAIN_FACTOR       = 0.04;
+        const BIKE_FACTOR        = 0.05;
+        const EV_FACTOR          = 0.05;
+        const WALK_FACTOR        = 0.00;
+
+        function calculateFootprint() {
+            // Get User Name
+            let nameInput = document.getElementById('userName').value.trim();
+            const userName = nameInput !== "" ? nameInput : "Guest User";
+
+            // Get Input Values
+            const electricity = parseFloat(document.getElementById('electricity').value) || 0;
+            const gas         = parseFloat(document.getElementById('gas').value) || 0;
+            const car         = parseFloat(document.getElementById('car').value) || 0;
+            const bike        = parseFloat(document.getElementById('bike').value) || 0;
+            const bus         = parseFloat(document.getElementById('bus').value) || 0;
+            const train       = parseFloat(document.getElementById('train').value) || 0;
+            const ev          = parseFloat(document.getElementById('ev').value) || 0;
+            const walk        = parseFloat(document.getElementById('walk').value) || 0;
+
+            // Perform Calculations (Mirroring Java Backend)
+            const elecCo2  = electricity * ELECTRICITY_FACTOR;
+            const gasCo2   = gas * GAS_FACTOR;
+            const carCo2   = car * CAR_FACTOR;
+            const bikeCo2  = bike * BIKE_FACTOR;
+            const busCo2   = bus * BUS_FACTOR;
+            const trainCo2 = train * TRAIN_FACTOR;
+            const evCo2    = ev * EV_FACTOR;
+            const walkCo2  = walk * WALK_FACTOR;
+
+            const total = elecCo2 + gasCo2 + carCo2 + bikeCo2 + busCo2 + trainCo2 + evCo2 + walkCo2;
+
+            // Emission rating equivalent to getEmissionRating() in Java
+            let rating = "Low";
+            let ratingColor = "#22c55e";
+            if (total > 10) {
+                rating = "High";
+                ratingColor = "#ef4444";
+            } else if (total > 5) {
+                rating = "Moderate";
+                ratingColor = "#f59e0b";
+            }
+
+            // Update UI Output
+            document.getElementById('reportUserHeader').innerText = `${userName}'s Carbon Footprint Report`;
+            document.getElementById('totalCo2').innerHTML = `${total.toFixed(2)} <span class="unit">kg CO₂</span>`;
+            document.getElementById('ratingScore').innerText = rating;
+            document.getElementById('ratingScore').style.color = ratingColor;
+
+            document.getElementById('resElectricity').innerText = `${elecCo2.toFixed(2)} kg CO₂`;
+            document.getElementById('resGas').innerText         = `${gasCo2.toFixed(2)} kg CO₂`;
+            document.getElementById('resCar').innerText         = `${carCo2.toFixed(2)} kg CO₂`;
+            document.getElementById('resBike').innerText        = `${bikeCo2.toFixed(2)} kg CO₂`;
+            document.getElementById('resBus').innerText         = `${busCo2.toFixed(2)} kg CO₂`;
+            document.getElementById('resTrain').innerText       = `${trainCo2.toFixed(2)} kg CO₂`;
+            document.getElementById('resEv').innerText          = `${evCo2.toFixed(2)} kg CO₂`;
+            document.getElementById('resWalk').innerText        = `${walkCo2.toFixed(2)} kg CO₂`;
+
+            document.getElementById('summaryStatus').innerText = `Calculated: ${total.toFixed(2)} kg CO₂`;
+
+            // Display Results
+            const resultsSec = document.getElementById('resultsSection');
+            resultsSec.style.display = 'block';
+            resultsSec.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
