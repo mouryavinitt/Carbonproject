@@ -1,0 +1,4 @@
+com\carbontrack\SecurityAuthorizationTest.class
+com\carbontrack\CalculationEngineTest.class
+com\carbontrack\OrganizationScopeTest.class
+com\carbontrack\AuthServiceTest.class

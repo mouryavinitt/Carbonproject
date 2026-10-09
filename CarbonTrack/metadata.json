@@ -1,0 +1,6 @@
+{
+  "name": "CarbonTrack - Carbon Footprint Calculator & Tracking Platform",
+  "description": "Full-stack carbon footprint calculator and emissions tracking platform using verified scientific emission factors from IPCC, GHG Protocol, CEA India, and UK DESNZ.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
